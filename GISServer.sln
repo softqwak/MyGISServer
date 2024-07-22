@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GISServer.API", "GISServer.API\GISServer.API.csproj", "{B0D710B2-FEDE-4139-8F78-A5FD3244209F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7089F876-AA5B-4768-B41F-400C0FE7300E} = {7089F876-AA5B-4768-B41F-400C0FE7300E}
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E} = {7A802984-3CF4-42FC-8C27-2310BED56D9E}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GISServer.Domain", "GISServer.Domain\GISServer.Domain.csproj", "{7089F876-AA5B-4768-B41F-400C0FE7300E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GISServer.Infrastructure", "GISServer.Infrastructure\GISServer.Infrastructure.csproj", "{7A802984-3CF4-42FC-8C27-2310BED56D9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7089F876-AA5B-4768-B41F-400C0FE7300E} = {7089F876-AA5B-4768-B41F-400C0FE7300E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GISServer.Tests", "GISServer.Tests\GISServer.Tests.csproj", "{5B7F0432-55D3-4A80-8384-2DC4B382CCB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7089F876-AA5B-4768-B41F-400C0FE7300E} = {7089F876-AA5B-4768-B41F-400C0FE7300E}
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E} = {7A802984-3CF4-42FC-8C27-2310BED56D9E}
+		{B0D710B2-FEDE-4139-8F78-A5FD3244209F} = {B0D710B2-FEDE-4139-8F78-A5FD3244209F}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0D710B2-FEDE-4139-8F78-A5FD3244209F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D710B2-FEDE-4139-8F78-A5FD3244209F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D710B2-FEDE-4139-8F78-A5FD3244209F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D710B2-FEDE-4139-8F78-A5FD3244209F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7089F876-AA5B-4768-B41F-400C0FE7300E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7089F876-AA5B-4768-B41F-400C0FE7300E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7089F876-AA5B-4768-B41F-400C0FE7300E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7089F876-AA5B-4768-B41F-400C0FE7300E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A802984-3CF4-42FC-8C27-2310BED56D9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7F0432-55D3-4A80-8384-2DC4B382CCB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7F0432-55D3-4A80-8384-2DC4B382CCB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7F0432-55D3-4A80-8384-2DC4B382CCB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7F0432-55D3-4A80-8384-2DC4B382CCB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A6801F5-3DB2-435A-A9BB-11EC51E0B058}
+	EndGlobalSection
+EndGlobal

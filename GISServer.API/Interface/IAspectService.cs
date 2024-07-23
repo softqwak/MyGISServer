@@ -1,7 +1,7 @@
 ﻿using GISServer.API.Model;
 using GISServer.Domain.Model;
 
-namespace GISServer.API.Service.Interface
+namespace GISServer.API.Interface
 {
     public interface IAspectService
     {
@@ -9,7 +9,7 @@ namespace GISServer.API.Service.Interface
         public Task<AspectDTO> AddAspect(AspectDTO AspectDTO);
         public Task<AspectDTO> GetAspect(Guid id);
         public Task<List<AspectDTO>> GetAspects();
-        public String CallAspect(String endPoint);
+        public Task<String> CallAspect(String endPoint);
         public Task<(bool, string)> DeleteAspect(Guid id);
     }
 }

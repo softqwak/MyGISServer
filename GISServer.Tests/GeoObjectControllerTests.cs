@@ -20,7 +20,7 @@ namespace GISServer.Tests
        }
 
        [Fact]
-       public async Task GetGeoObjects_ReturnsGeoObjectsList()
+       public async Task Get_ReturnsGeoObjectsList()
        {
            // Arrange
            var geoObjectsDTO = new List<GeoObjectDTO>()
@@ -28,10 +28,10 @@ namespace GISServer.Tests
                new GeoObjectDTO() { Id = Guid.NewGuid(), Name = "Object1" },
                new GeoObjectDTO() { Id = Guid.NewGuid(), Name = "Object2" }
            };
-           _geoObjectServiceMock.Setup(s => s.GetGeoObjects()).ReturnsAsync(geoObjectsDTO);
+           _geoObjectServiceMock.Setup(s => s.Get()).ReturnsAsync(geoObjectsDTO);
 
            // Act
-           var result = await _geoObjectController.GetGeoObjects();
+           var result = await _geoObjectController.Get();
 
            // Assert
            var okResult = Assert.IsType<ObjectResult>(result);
@@ -41,15 +41,15 @@ namespace GISServer.Tests
        }
 
        [Fact]
-       public async Task GetGeoObject_ReturnsGeoObject()
+       public async Task Get_ReturnsGeoObject()
        {
            // Arrange
            var geoObjectDTO = new GeoObjectDTO() { Id = Guid.NewGuid(), Name = "Object" };
-           _geoObjectServiceMock.Setup(s => s.GetGeoObject(It.IsAny<Guid>()))
+           _geoObjectServiceMock.Setup(s => s.Get(It.IsAny<Guid>()))
            .ReturnsAsync(geoObjectDTO);
 
            // Act
-           var result = await _geoObjectController.GetGeoObject((Guid)geoObjectDTO.Id);
+           var result = await _geoObjectController.Get((Guid)geoObjectDTO.Id);
 
            // Assert
            var okResult = Assert.IsType<ObjectResult>(result);
@@ -63,7 +63,7 @@ namespace GISServer.Tests
        {
            // Arrange
            var geoObjectDTO = new GeoObjectDTO() { Name = "Object1" };
-           _geoObjectServiceMock.Setup(s => s.AddGeoObject(It.IsAny<GeoObjectDTO>()))
+           _geoObjectServiceMock.Setup(s => s.Add(It.IsAny<GeoObjectDTO>()))
            .ReturnsAsync((GeoObjectDTO geoObjectDTO) =>
            {
                var returnGeoObject = new GeoObjectDTO() { Id = Guid.NewGuid(), Name = geoObjectDTO.Name };
@@ -101,7 +101,7 @@ namespace GISServer.Tests
        {
            // Arrange
            var geoObjectDTO = new GeoObjectDTO() { Id = Guid.NewGuid(), Name = "Object" };
-           _geoObjectServiceMock.Setup(s => s.GetGeoObject(It.IsAny<Guid>()))
+           _geoObjectServiceMock.Setup(s => s.Get(It.IsAny<Guid>()))
            .ReturnsAsync(geoObjectDTO);
            _geoObjectServiceMock.Setup(s => s.DeleteGeoObject(It.IsAny<Guid>()))
            .ReturnsAsync((true, "GeoObject got deleted"));

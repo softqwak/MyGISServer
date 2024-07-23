@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
 using GISServer.API.Model;
 
 namespace GISServer.API.Controllers

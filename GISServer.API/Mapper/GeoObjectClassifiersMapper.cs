@@ -10,20 +10,28 @@ namespace GISServer.API.Mapper
     {
         public async Task<GeoObjectsClassifiersDTO> GOCToDTO(GeoObjectsClassifiers geoObjectsClassifiers)
         {
-            return new GeoObjectsClassifiersDTO
+            await Task.Run(async () =>
             {
-                GeoObjectId = geoObjectsClassifiers.GeoObjectId,
-                ClassifierId = geoObjectsClassifiers.ClassifierId
-            };
+                return new GeoObjectsClassifiersDTO
+                {
+                    GeoObjectId = geoObjectsClassifiers.GeoObjectId,
+                    ClassifierId = geoObjectsClassifiers.ClassifierId
+                };
+            });
+            return null;
         }
 
         public async Task<GeoObjectsClassifiers> DTOToGOC(GeoObjectsClassifiersDTO geoObjectsClassifiersDTO)
         {
-            return new GeoObjectsClassifiers
+            await Task.Run(async () =>
             {
-                GeoObjectId = geoObjectsClassifiersDTO.GeoObjectId,
-                ClassifierId = geoObjectsClassifiersDTO.ClassifierId
-            };
+                return new GeoObjectsClassifiers
+                {
+                    GeoObjectId = geoObjectsClassifiersDTO.GeoObjectId,
+                    ClassifierId = geoObjectsClassifiersDTO.ClassifierId
+                };
+            });
+            return null;
         }
     }
 }

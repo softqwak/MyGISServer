@@ -1,7 +1,8 @@
 ﻿using GISServer.API.Model;
-using GISServer.Domain.Model;
 using GISServer.API.Mapper;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
+using GISServer.API.Service.Model;
+using GISServer.Domain.Model;
 
 namespace GISServer.API.Service
 {
@@ -9,13 +10,13 @@ namespace GISServer.API.Service
     {
         private readonly IAspectRepository _repository;
         private readonly AspectMapper _aspectMapper;
-        
+
         public AspectService(IAspectRepository repository, AspectMapper aspectMapper)
         {
             _repository = repository;
             _aspectMapper = aspectMapper;
         }
-        
+
         public AspectDTO InitAspect(AspectDTO aspectDTO)
         {
             aspectDTO.Id = Guid.NewGuid();
@@ -24,13 +25,13 @@ namespace GISServer.API.Service
 
         public async Task<AspectDTO> AddAspect(AspectDTO aspectDTO)
         {
-            try 
+            try
             {
-                aspectDTO = InitAspect(aspectDTO);                
+                aspectDTO = InitAspect(aspectDTO);
                 Aspect aspect = await _aspectMapper.DTOToAspect(aspectDTO);
                 return await _aspectMapper.AspectToDTO(await _repository.AddAspect(aspect));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"An error occured. Error Message: {ex.Message}");
                 return null;
@@ -47,17 +48,21 @@ namespace GISServer.API.Service
         {
             List<AspectDTO> aspectsDTO = new List<AspectDTO>();
             List<Aspect> aspects = await _repository.GetAspects();
-            foreach(var aspect in aspects)
+            foreach (var aspect in aspects)
             {
                 aspectsDTO.Add(await _aspectMapper.AspectToDTO(aspect));
             }
             return aspectsDTO;
         }
 
-        public String CallAspect(String endPoint)
+        public async Task<String> CallAspect(String endPoint)
         {
-            String report = "some information";
-            return report;
+            Task.Run(() =>
+            {
+                String report = "some information";
+                return report;
+            });
+            return null;
         }
         public async Task<(bool, string)> DeleteAspect(Guid id)
         {

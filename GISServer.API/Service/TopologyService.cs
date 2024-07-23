@@ -1,7 +1,7 @@
 ﻿using GISServer.API.Model;
 using GISServer.API.Mapper;
+using GISServer.API.Interface;
 using GISServer.API.Service.Model;
-using GISServer.API.Service.Interface;
 using GISServer.Domain.Model;
 using System.Text.Json;
 using NetTopologySuite.Geometries;
@@ -9,13 +9,13 @@ using NetTopologySuite.Geometries;
 
 namespace GISServer.API.Service
 {
-    public class TopologyService : ITopologyService 
+    public class TopologyService : ITopologyService
     {
         private readonly ITopologyRepository _repository;
         private readonly IGeoObjectRepository _geoObjectrepository;
         private readonly TopologyMapper _topologyMapper;
 
-        public TopologyService(ITopologyRepository repository, IGeoObjectRepository geoObjectrepository ,TopologyMapper topologyMapper)
+        public TopologyService(ITopologyRepository repository, IGeoObjectRepository geoObjectrepository, TopologyMapper topologyMapper)
         {
             _repository = repository;
             _topologyMapper = topologyMapper;
@@ -43,7 +43,7 @@ namespace GISServer.API.Service
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occured. Error Message: {ex.Message}");
-                return null;
+                throw;
             }
         }
 
@@ -62,7 +62,7 @@ namespace GISServer.API.Service
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occured. Error Message: {ex.Message}");
-                return null;
+                throw;
             }
         }
         public async Task<(bool, string)> DeleteTopologyLink(Guid id)
@@ -83,11 +83,24 @@ namespace GISServer.API.Service
             {
                 CommonBorder border = new CommonBorder();
                 var geometryFactory = new GeometryFactory();
-                var objectIn = await _geoObjectrepository.GetGeoObject((Guid)topologyLinkDTO.GeographicalObjectInId);
-                var objectOut = await _geoObjectrepository.GetGeoObject((Guid)topologyLinkDTO.GeographicalObjectOutId);
+                GeoObject objectIn = new();
+                GeoObject objectOut = new();
+                BorderGeocodes borderGeoCodesObjectIn = new();
+                BorderGeocodes borderGeoCodesObjectOut = new();
 
-                BorderGeocodes borderGeoCodesObjectIn = JsonSerializer.Deserialize<BorderGeocodes>(objectIn.Geometry.BorderGeocodes);
-                BorderGeocodes borderGeoCodesObjectOut = JsonSerializer.Deserialize<BorderGeocodes>(objectOut.Geometry.BorderGeocodes);
+                if (topologyLinkDTO.GeographicalObjectInId is not null && topologyLinkDTO.GeographicalObjectOutId is not null)
+                {
+                    objectIn = await _geoObjectrepository.Get((Guid)topologyLinkDTO.GeographicalObjectInId);
+                    objectOut = await _geoObjectrepository.Get((Guid)topologyLinkDTO.GeographicalObjectOutId);
+                }
+                else return topologyLinkDTO;
+
+                if (objectIn.Geometry.BorderGeocodes is not null && objectOut.Geometry.BorderGeocodes is not null)
+                {
+                    borderGeoCodesObjectIn = JsonSerializer.Deserialize<BorderGeocodes>(objectIn.Geometry.BorderGeocodes);
+                    borderGeoCodesObjectOut = JsonSerializer.Deserialize<BorderGeocodes>(objectOut.Geometry.BorderGeocodes);
+                }
+                else return topologyLinkDTO;
 
                 List<Coordinate> coordsIn = new List<Coordinate>();
                 List<Coordinate> coordsOut = new List<Coordinate>();
@@ -150,6 +163,7 @@ namespace GISServer.API.Service
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"{ex.Message}");
                 return topologyLinkDTO;
             }
         }

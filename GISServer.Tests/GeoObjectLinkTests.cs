@@ -334,7 +334,7 @@ namespace GISServer.Tests
             /*Assert.Equal(1, geoObject_A.OutputTopologyLinks.Count());
             Assert.Equal(1, geoObject_B.OutputTopologyLinks.Count());*/
 
-            /*Assert.Equal(geoObject_C, repository.GetGeoObject(geoObject_A.OutputTopologyLinks[1].GeographicalObjectIn.Id).Result);
+            /*Assert.Equal(geoObject_C, repository.Get(geoObject_A.OutputTopologyLinks[1].GeographicalObjectIn.Id).Result);
 
             Assert.Equal(Status.Archive, geoObject_A.Status);
             Assert.Equal(Status.Archive, geoObject_B.Status);

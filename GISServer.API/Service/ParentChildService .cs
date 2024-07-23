@@ -1,7 +1,8 @@
 ﻿using GISServer.API.Model;
-using GISServer.Domain.Model;
 using GISServer.API.Mapper;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
+using GISServer.API.Service.Model;
+using GISServer.Domain.Model;
 
 
 namespace GISServer.API.Service

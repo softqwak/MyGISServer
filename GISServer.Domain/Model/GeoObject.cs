@@ -19,32 +19,6 @@
         public List<TopologyLink>? InputTopologyLinks { get; set; } = new List<TopologyLink>();
         public List<Aspect>? Aspects { get; set; } = new List<Aspect>();        
 
-
-        public void Union(GeoObject geo1, GeoObject geo2)
-        {
-            geo1.Status = Model.Status.Archive;
-            geo1.InputTopologyLinks[0].Status = Model.Status.Archive;
-            geo1.OutputTopologyLinks[0].Status = Model.Status.Archive;
-
-            geo2.Status = Model.Status.Archive;
-            geo2.InputTopologyLinks[0].Status = Model.Status.Archive;
-            geo2.OutputTopologyLinks[0].Status = Model.Status.Archive;
-
-        }
-        public void ToString()
-        {
-            Console.WriteLine(Id);
-            Console.WriteLine(Name);
-            Console.WriteLine(GeoNameId);
-            Console.WriteLine(Status);
-            Console.WriteLine(GeoNameFeatureId);
-            Console.WriteLine(GeoNameFeature.FeatureKindNameRu);
-            Console.WriteLine(GeoNameId);
-            foreach(TopologyLink link in OutputTopologyLinks)
-                Console.WriteLine(link.Id);
-            foreach(TopologyLink link in InputTopologyLinks)
-                Console.WriteLine(link.Id);
-        }
     }
 }
 

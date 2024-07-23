@@ -48,6 +48,20 @@ namespace GISServer.Infrastructure.Service
             await _context.SaveChangesAsync();
             return (true, "Aspect got deleted");
         }
+        public async Task<(bool, string)> Archive(Guid id)
+        {
+            var dbAspect = await GetAspect(id);
+
+            if (dbAspect == null)
+            {
+                return (false, "Aspect could not be found");
+            }
+
+            dbAspect.Status = Status.Archive;
+            await _context.SaveChangesAsync();
+            return (true, "Aspect got archived");
+        }
+
 
     }
 }

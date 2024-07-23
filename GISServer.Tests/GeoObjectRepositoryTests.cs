@@ -29,7 +29,7 @@ namespace GISServer.Tests
             };
 
             // Act
-            await repository.AddGeoObject(geoObject);
+            await repository.Add(geoObject);
             context.SaveChanges();
 
             // Assert
@@ -48,11 +48,11 @@ namespace GISServer.Tests
             {
                 Name = "Test"
             };
-            await repository.AddGeoObject(geoObject);
+            await repository.Add(geoObject);
             context.SaveChanges();
 
             // Act
-            var result = await repository.GetGeoObject(geoObject.Id);
+            var result = await repository.Get(geoObject.Id);
 
             // Assert
             Assert.Equal(geoObject.Name, result.Name);
@@ -69,7 +69,7 @@ namespace GISServer.Tests
                 Name = "Объект_Тестовый",
                 Status = Status.Actual
             };
-            await repository.AddGeoObject(geoObject);
+            await repository.Add(geoObject);
             context.SaveChanges();
 
             // Act
@@ -80,7 +80,7 @@ namespace GISServer.Tests
 
             // Assert
             
-            var test = await repository.GetGeoObject(geoObject.Id);
+            var test = await repository.Get(geoObject.Id);
             Assert.Equal("Объект_Обновленный", test.Name);
             Assert.Equal(Status.Archive,test.Status);
            
@@ -96,7 +96,7 @@ namespace GISServer.Tests
             {
                 Name = "Test"
             };
-            await repository.AddGeoObject(geoObject);
+            await repository.Add(geoObject);
             context.SaveChanges();
 
             // Act
@@ -140,8 +140,8 @@ namespace GISServer.Tests
             geoObject2.OutputTopologyLinks.Add(tpl1);
             
 
-            await repository.AddGeoObject(geoObject1);
-            await repository.AddGeoObject(geoObject2);
+            await repository.Add(geoObject1);
+            await repository.Add(geoObject2);
             context.SaveChanges();
 
             //Act
@@ -176,7 +176,7 @@ namespace GISServer.Tests
             geoObject3.InputTopologyLinks.Add(tpl5);
             geoObject3.OutputTopologyLinks.Add(tpl6);
 
-            await repository.AddGeoObject(geoObject3);
+            await repository.Add(geoObject3);
 
             geoObject1.InputTopologyLinks.Add(tpl3);
             geoObject1.OutputTopologyLinks.Add(tpl4);

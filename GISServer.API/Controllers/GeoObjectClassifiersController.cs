@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
 using GISServer.API.Model;
 
 namespace GISServer.API.Controllers
@@ -18,15 +18,15 @@ namespace GISServer.API.Controllers
         }
 
         [HttpGet("GetObjectsClassifiers")]
-        public async Task<ActionResult> GetGeoObjectsClassifiers()
+        public async Task<ActionResult> GetClassifiers()
         {
-            var getGeoObjectsClassifiers = await _geoObjectClassifiersService.GetGeoObjectsClassifiers();
-            if (getGeoObjectsClassifiers == null)
+            var GetClassifiers = await _geoObjectClassifiersService.Get();
+            if (GetClassifiers == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent, "No Classifier in database");
             }
 
-            return StatusCode(StatusCodes.Status200OK, getGeoObjectsClassifiers);
+            return StatusCode(StatusCodes.Status200OK, GetClassifiers);
         }
 
     }

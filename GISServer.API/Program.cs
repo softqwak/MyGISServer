@@ -1,5 +1,6 @@
 using GISServer.API.Service;
-using GISServer.API.Service.Interface;
+using GISServer.API.Service.Model;
+using GISServer.API.Interface;
 using GISServer.API.Mapper;
 using GISServer.Infrastructure.Data;
 using GISServer.Infrastructure.Service;

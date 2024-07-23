@@ -56,5 +56,19 @@ namespace GISServer.Infrastructure.Service
             await _context.SaveChangesAsync();
             return (true, "Classifier got deleted");
         }
+
+        public async Task<(bool, string)> Archive(Guid id)
+        {
+            var dbClassifier = await GetClassifier(id);
+
+            if (dbClassifier == null)
+            {
+                return (false, "Classifier could not be found");
+            }
+            
+            dbClassifier.Status = Status.Archive;
+            await _context.SaveChangesAsync();
+            return (true, "Classifier got archived");
+        }
     }
 }

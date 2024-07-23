@@ -2,7 +2,7 @@
 using GISServer.Domain.Model;
 using GISServer.API.Mapper;
 using GISServer.Infrastructure.Service;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
 
 
 namespace GISServer.API.Service

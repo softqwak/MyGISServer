@@ -103,8 +103,8 @@ namespace GISServer.Tests
 
             //Act
 
-            geoObject_A = await repository.GetGeoObject(geoObject_A.Id);
-            geoObject_B = await repository.GetGeoObject(geoObject_B.Id);
+            geoObject_A = await repository.Get(geoObject_A.Id);
+            geoObject_B = await repository.Get(geoObject_B.Id);
 
             geoObject_A.Status = Status.Archive;
             geoObject_B.Status = Status.Archive;
@@ -182,11 +182,11 @@ namespace GISServer.Tests
             context.SaveChanges();
             context.ChangeTracker.Clear();
 
-            geoObject_A = await repository.GetGeoObject(geoObject_A.Id);
-            geoObject_B = await repository.GetGeoObject(geoObject_B.Id);
-            geoObject_C = await repository.GetGeoObject(geoObject_C.Id);
-            geoObject_D = await repository.GetGeoObject(geoObject_D.Id);
-            geoObject_AB = await repository.GetGeoObject(geoObject_AB.Id);
+            geoObject_A = await repository.Get(geoObject_A.Id);
+            geoObject_B = await repository.Get(geoObject_B.Id);
+            geoObject_C = await repository.Get(geoObject_C.Id);
+            geoObject_D = await repository.Get(geoObject_D.Id);
+            geoObject_AB = await repository.Get(geoObject_AB.Id);
 
             //Assert
             Assert.Equal(5, context.GeoObjects.Count());

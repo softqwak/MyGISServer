@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GISServer.API.Service.Interface;
+using GISServer.API.Interface;
 using GISServer.API.Model;
 
 namespace GISServer.API.Controllers
@@ -58,7 +58,11 @@ namespace GISServer.API.Controllers
         {
             // something
             //
-            String reportAspect = _aspectService.CallAspect(endPoint);
+            String reportAspect = await _aspectService.CallAspect(endPoint);
+            if (reportAspect == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "dont can call aspect");
+            }
             return StatusCode(StatusCodes.Status200OK, reportAspect);
         }
 

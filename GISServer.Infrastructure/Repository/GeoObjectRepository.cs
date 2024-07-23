@@ -13,9 +13,9 @@ namespace GISServer.Infrastructure.Service
             _context = context;
         }
 
-        public async Task<List<GeoObject>> GetGeoObjects()
+        public async Task<List<GeoObject>> Get()
         {
-            return await _context.GeoObjects
+            var query = await _context.GeoObjects
                 .Include(gnf => gnf.GeoNameFeature)
                 .Include(gv => gv.GeometryVersion)
                 .Include(g => g.Geometry)
@@ -26,11 +26,13 @@ namespace GISServer.Infrastructure.Service
                 .Include(otl => otl.OutputTopologyLinks)
                 .Include(a => a.Aspects)
                 .ToListAsync();
+            if (query is not null) return query;
+            return null;
         }
 
-        public async Task<GeoObject> GetGeoObject(Guid id)
+        public async Task<GeoObject> Get(Guid id)
         {
-            var result = await _context.GeoObjects
+            var query = await _context.GeoObjects
                 .Where(go => go.Id == id)
                 .Include(gnf => gnf.GeoNameFeature)
                 .Include(gv => gv.GeometryVersion)
@@ -42,33 +44,29 @@ namespace GISServer.Infrastructure.Service
                 .Include(otl => otl.OutputTopologyLinks)
                 .Include(a => a.Aspects)
                 .FirstOrDefaultAsync();
-            return result!;
+            if (query is not null) return query;
+            return null;
         }
         public async Task<GeoObject> GetByNameAsync(string name)
         {
-            var result = await _context.GeoObjects
+            var query = await _context.GeoObjects
                 .Where(o => o.Name == name)
                 .Include(l => l.InputTopologyLinks)
                 .Include(l2 => l2.OutputTopologyLinks)
                 .FirstOrDefaultAsync();
-            return result!;
+            if (query is not null) return query;
+            return null;
         }
 
-        // GeoObjectsClassifiersRepository
-        //public async Task<List<GeoObjectsClassifiers>> GetClassifiers(Guid geoObjectId)
-        //{
-        //return await _context.GeoObjectsClassifiers
-        //.Where(o => o.GeoObjectId == geoObjectId)
-        //.ToListAsync();
-        //}
-
-        public async Task<List<GeoObjectsClassifiers>> GetGeoObjectsClassifiers(Guid? geoObjectInfoId)
+        public async Task<List<GeoObjectsClassifiers>> GetClassifiers(Guid? geoObjectInfoId)
         {
-            return await _context.GeoObjectsClassifiers
+            var query = await _context.GeoObjectsClassifiers
                 .Where(o => o.GeoObjectId == geoObjectInfoId)
                 .Include(gogc => gogc.GeoObjectInfo)
                 .Include(gogc => gogc.Classifier)
                 .ToListAsync();
+            if (query is not null) return query;
+            return null;
         }
 
         public void ChangeTrackerClear()
@@ -76,37 +74,35 @@ namespace GISServer.Infrastructure.Service
             _context.ChangeTracker.Clear();
         }
 
-        public async Task<GeoObject> AddGeoObject(GeoObject geoObject)
+        public async Task<GeoObject> Add(GeoObject geoObject)
         {
 
             await _context.GeoObjects.AddAsync(geoObject);
             await _context.SaveChangesAsync();
-            return await GetGeoObject(geoObject.Id);
+            return await Get(geoObject.Id);
         }
 
-        public async Task<List<GeoObjectsClassifiers>> AddGeoObjectsClassifiers(GeoObjectsClassifiers geoObjectsClassifiers)
+        public async Task<List<GeoObjectsClassifiers>> AddClassifier(GeoObjectsClassifiers geoObjectsClassifiers)
         {
             await _context.GeoObjectsClassifiers.AddAsync(geoObjectsClassifiers);
             await _context.SaveChangesAsync();
-            return await GetGeoObjectsClassifiers(geoObjectsClassifiers.GeoObjectId);
+            return await GetClassifiers(geoObjectsClassifiers.GeoObjectId);
         }
 
-        public async Task<GeoObject> UpdateGeoObject(GeoObject geoObject)
-        {
+        // public async Task<GeoObject> UpdateGeoObject(GeoObject geoObject)
+        // {
 
-            _context.Entry(geoObject).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return geoObject;
-        }
+        //     _context.Entry(geoObject).State = EntityState.Modified;
+        //     await _context.SaveChangesAsync();
+        //     return geoObject;
+        // }
 
         public async Task UpdateAsync(GeoObject geoObject)
         {
-            var existgeoObject = GetGeoObject(geoObject.Id).Result;
+            var existgeoObject = Get(geoObject.Id).Result;
             if (existgeoObject != null)
             {
                 _context.Entry(existgeoObject).CurrentValues.SetValues(geoObject);
-
-                ////////// InputTopologyLinks ///////////
 
                 if (geoObject.InputTopologyLinks != null)
                 {
@@ -130,7 +126,6 @@ namespace GISServer.Infrastructure.Service
                         }
                     }
                 }
-                ////////// InputTopologyLinks ///////////
 
                 if (geoObject.OutputTopologyLinks != null)
                 {
@@ -154,7 +149,6 @@ namespace GISServer.Infrastructure.Service
                         }
                     }
                 }
-                ////////// Classifier ///////////
 
                 if (geoObject.GeoObjectInfo != null)
                 {
@@ -181,7 +175,6 @@ namespace GISServer.Infrastructure.Service
                         }
                     }
                 }
-                ////////// Aspect ///////////
 
                 if (geoObject.Aspects != null)
                 {
@@ -205,7 +198,6 @@ namespace GISServer.Infrastructure.Service
                         }
                     }
                 }
-                ////////// ParentChild ///////////
 
                 if (geoObject.ParentGeoObjects != null)
                 {
@@ -259,10 +251,10 @@ namespace GISServer.Infrastructure.Service
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(bool, string)> DeleteGeoObject(Guid id)
+        public async Task<(bool, string)> Delete(Guid id)
         {
 
-            var dbGeoObject = await GetGeoObject(id);
+            var dbGeoObject = await Get(id);
             if (dbGeoObject == null)
             {
                 return (false, "GeoObeject could not be found");
@@ -292,7 +284,7 @@ namespace GISServer.Infrastructure.Service
 
         public async Task<(bool, string)> Archive(Guid id)
         {
-            var dbGeoObject = await GetGeoObject(id);
+            var dbGeoObject = await Get(id);
 
             if (dbGeoObject == null)
             {
@@ -303,17 +295,17 @@ namespace GISServer.Infrastructure.Service
             return (true, "GeoObject got archived");
         }
 
-        public async Task<GeoObject> AddGeoObjectAspect(Guid geoObjectId, Guid aspectId)
+        public async Task<GeoObject> AddAspect(Guid geoObjectId, Guid aspectId)
         {
             _context.Aspects
                 .Where(a => a.Id == aspectId)
                 .ExecuteUpdate(b =>
                     b.SetProperty(a => a.GeographicalObjectId, geoObjectId)
                 );
-            return await GetGeoObject(geoObjectId);
+            return await Get(geoObjectId);
         }
 
-        public async Task<List<Aspect>> GetGeoObjectAspects(Guid geoObjectId)
+        public async Task<List<Aspect>> GetAspects(Guid geoObjectId)
         {
             return await _context.Aspects
                 .Where(a => a.GeographicalObjectId == geoObjectId)

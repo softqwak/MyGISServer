@@ -18,14 +18,15 @@ namespace GISServer.Infrastructure.Service
         {
             try
             {
-                return await _context.TopologyLinks
+                var result = await _context.TopologyLinks
                     .Where(tl => tl.Id == id)
                     .FirstOrDefaultAsync();
+                return result!;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                throw;
             }
         }
 
@@ -40,7 +41,7 @@ namespace GISServer.Infrastructure.Service
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                throw;
             }
         }
 

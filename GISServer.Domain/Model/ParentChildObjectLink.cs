@@ -3,6 +3,7 @@ namespace GISServer.Domain.Model
     public class ParentChildObjectLink
     {
         public Guid Id { get; set; }
+        public Status? Status { get; set; }
         public String? ParentGeographicalObjectName { get; set; }
         public String? ChildGeographicalObjectName { get; set; }
         public bool? CompletelyIncludedFlag { get; set; }
@@ -13,5 +14,6 @@ namespace GISServer.Domain.Model
         public GeoObject? ParentGeographicalObject { get; set; }
         public Guid? ChildGeographicalObjectId { get; set; }
         public GeoObject? ChildGeographicalObject { get; set; }
+
     }
 }

@@ -23,15 +23,17 @@ namespace GISServer.Infrastructure.Service
         // ClassifierRepository
         public async Task<Classifier> GetClassifier(Guid? id)
         {
-            try{
-            return await _context.Classifiers
-                .Where(ci => ci.Id == id)
-                .FirstOrDefaultAsync();
+            try
+            {
+                var result = await _context.Classifiers
+                    .Where(ci => ci.Id == id)
+                    .FirstOrDefaultAsync();
+                return result!;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                throw;
             }
         }
 

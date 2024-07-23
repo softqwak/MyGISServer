@@ -1,8 +1,11 @@
+using GISServer.Domain.Model;
+
 namespace GISServer.API.Model
 {
     public class GeoNamesFeatureDTO
     {
        public Guid? Id { get; set; }
+       public Status? Status { get; set; }
        public String? GeoNamesFeatureCode { get; set; }
        public String? GeoNamesFeatureKind { get; set; }
        public String? FeatureKindNameEn { get; set; }

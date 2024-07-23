@@ -16,9 +16,10 @@ namespace GISServer.Infrastructure.Service
         // AspectRepository
         public async Task<Aspect> GetAspect(Guid? id)
         {
-            return await _context.Aspects
+            var result = await _context.Aspects
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
+            return result!;
         }
 
         // AspectRepository

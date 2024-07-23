@@ -24,9 +24,10 @@ namespace GISServer.Infrastructure.Service
 
         public async Task<GeoObjectsClassifiers> GetGeoObjectsClassifiers(Guid geoObjectId, Guid classifierId)
         {
-            return await _context.GeoObjectsClassifiers
+            var result = await _context.GeoObjectsClassifiers
                 .Where(e => e.ClassifierId == classifierId && e.GeoObjectId == geoObjectId)
                 .FirstOrDefaultAsync();
+            return result!;
         }
 
         public async Task<(bool, string)> DeleteGeoObjectClassifier(Guid geoObjectId, Guid classifierId)

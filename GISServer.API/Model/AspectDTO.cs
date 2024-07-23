@@ -1,8 +1,11 @@
+using GISServer.Domain.Model;
+
 namespace GISServer.API.Model
 {
     public class AspectDTO
     {
         public Guid Id { get; set; }
+        public Status? Status { get; set; }
         public string? Type { get; set; }
         public string? Code { get; set; }
         public string? EndPoint { get; set; }

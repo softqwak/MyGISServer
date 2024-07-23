@@ -6,5 +6,6 @@ namespace GISServer.API.Model
     {
         public Guid? GeoObjectId { get; set; }
         public Guid? ClassifierId { get; set; }
+        public Status? Status { get; set; }
     }
 }

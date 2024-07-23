@@ -17,14 +17,15 @@ namespace GISServer.Infrastructure.Service
         {
             try
             {
-                return await _context.ParentChildObjectLinks
+                var result = await _context.ParentChildObjectLinks
                     .Where(pcol => pcol.Id == id)
                     .FirstOrDefaultAsync();
+                return result!;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                throw;
             }
                 
         }
@@ -39,7 +40,7 @@ namespace GISServer.Infrastructure.Service
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                return null;
+                throw;
             }
         }
 

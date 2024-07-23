@@ -17,7 +17,7 @@ namespace GISServer.Tests
         public TestHelper()
         {
             var contextOptions = new DbContextOptionsBuilder<Context>()
-                .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
 

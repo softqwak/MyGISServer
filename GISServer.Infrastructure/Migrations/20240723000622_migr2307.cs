@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GISServer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class migr2307 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,25 +34,34 @@ namespace GISServer.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GeoObjects",
+                name: "Aspects",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: true),
+                    Code = table.Column<string>(type: "text", nullable: true),
+                    EndPoint = table.Column<string>(type: "text", nullable: true),
+                    CommonInfo = table.Column<string>(type: "text", nullable: true),
+                    GeographicalObjectId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Aspects", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classifiers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    GeoNameId = table.Column<int>(type: "integer", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: true),
-                    UpdateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    GeoNameFeatureId = table.Column<Guid>(type: "uuid", nullable: true)
+                    Code = table.Column<string>(type: "text", nullable: true),
+                    CommonInfo = table.Column<string>(type: "text", nullable: true),
+                    GeoObjectInfoId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GeoObjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GeoObjects_GeoNamesFeatures_GeoNameFeatureId",
-                        column: x => x.GeoNameFeatureId,
-                        principalTable: "GeoNamesFeatures",
-                        principalColumn: "Id");
+                    table.PrimaryKey("PK_Classifiers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,10 +84,33 @@ namespace GISServer.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GeometryVersions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeoObjects",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    GeoNameId = table.Column<int>(type: "integer", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: true),
+                    UpdateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    GeoNameFeatureId = table.Column<Guid>(type: "uuid", nullable: true),
+                    GeometryId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoObjects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GeometryVersions_GeoObjects_GeographicalObjectId",
-                        column: x => x.GeographicalObjectId,
-                        principalTable: "GeoObjects",
+                        name: "FK_GeoObjects_GeoNamesFeatures_GeoNameFeatureId",
+                        column: x => x.GeoNameFeatureId,
+                        principalTable: "GeoNamesFeatures",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeoObjects_GeometryVersions_GeometryId",
+                        column: x => x.GeometryId,
+                        principalTable: "GeometryVersions",
                         principalColumn: "Id");
                 });
 
@@ -167,6 +199,40 @@ namespace GISServer.Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GeoObjectsClassifiers",
+                columns: table => new
+                {
+                    GeoObjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClassifierId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoObjectsClassifiers", x => new { x.ClassifierId, x.GeoObjectId });
+                    table.ForeignKey(
+                        name: "FK_GeoObjectsClassifiers_Classifiers_ClassifierId",
+                        column: x => x.ClassifierId,
+                        principalTable: "Classifiers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GeoObjectsClassifiers_GeoObjectInfos_GeoObjectId",
+                        column: x => x.GeoObjectId,
+                        principalTable: "GeoObjectInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Aspects_GeographicalObjectId",
+                table: "Aspects",
+                column: "GeographicalObjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classifiers_GeoObjectInfoId",
+                table: "Classifiers",
+                column: "GeoObjectInfoId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_GeometryVersions_GeographicalObjectId",
                 table: "GeometryVersions",
@@ -179,9 +245,19 @@ namespace GISServer.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_GeoObjects_GeometryId",
+                table: "GeoObjects",
+                column: "GeometryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GeoObjects_GeoNameFeatureId",
                 table: "GeoObjects",
                 column: "GeoNameFeatureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeoObjectsClassifiers_GeoObjectId",
+                table: "GeoObjectsClassifiers",
+                column: "GeoObjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParentChildObjectLinks_ChildGeographicalObjectId",
@@ -202,16 +278,41 @@ namespace GISServer.Infrastructure.Migrations
                 name: "IX_TopologyLinks_GeographicalObjectOutId",
                 table: "TopologyLinks",
                 column: "GeographicalObjectOutId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Aspects_GeoObjects_GeographicalObjectId",
+                table: "Aspects",
+                column: "GeographicalObjectId",
+                principalTable: "GeoObjects",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Classifiers_GeoObjectInfos_GeoObjectInfoId",
+                table: "Classifiers",
+                column: "GeoObjectInfoId",
+                principalTable: "GeoObjectInfos",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_GeometryVersions_GeoObjects_GeographicalObjectId",
+                table: "GeometryVersions",
+                column: "GeographicalObjectId",
+                principalTable: "GeoObjects",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "GeometryVersions");
+            migrationBuilder.DropForeignKey(
+                name: "FK_GeometryVersions_GeoObjects_GeographicalObjectId",
+                table: "GeometryVersions");
 
             migrationBuilder.DropTable(
-                name: "GeoObjectInfos");
+                name: "Aspects");
+
+            migrationBuilder.DropTable(
+                name: "GeoObjectsClassifiers");
 
             migrationBuilder.DropTable(
                 name: "ParentChildObjectLinks");
@@ -220,10 +321,19 @@ namespace GISServer.Infrastructure.Migrations
                 name: "TopologyLinks");
 
             migrationBuilder.DropTable(
+                name: "Classifiers");
+
+            migrationBuilder.DropTable(
+                name: "GeoObjectInfos");
+
+            migrationBuilder.DropTable(
                 name: "GeoObjects");
 
             migrationBuilder.DropTable(
                 name: "GeoNamesFeatures");
+
+            migrationBuilder.DropTable(
+                name: "GeometryVersions");
         }
     }
 }

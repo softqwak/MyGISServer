@@ -1,8 +1,7 @@
 ﻿using GISServer.API.Model;
 using GISServer.Domain.Model;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using GISServer.API.Mapper;
+using GISServer.API.Service.Interface;
 
 namespace GISServer.API.Service
 {

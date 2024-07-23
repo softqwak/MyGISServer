@@ -1,13 +1,10 @@
 ﻿using GISServer.API.Model;
-using GISServer.Domain.Model;
-using GISServer.API.Service.AdditionalClasses;
 using GISServer.API.Mapper;
+using GISServer.API.Service.Model;
+using GISServer.API.Service.Interface;
+using GISServer.Domain.Model;
 using System.Text.Json;
 using NetTopologySuite.Geometries;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow.CopyAnalysis;
 
 
 namespace GISServer.API.Service

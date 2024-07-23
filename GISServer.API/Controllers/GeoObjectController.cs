@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GISServer.API.Service;
+using GISServer.API.Service.Interface;
 using GISServer.API.Model;
-using GISServer.Domain.Model;
 
 namespace GISServer.API.Controllers
 {
@@ -11,14 +10,14 @@ namespace GISServer.API.Controllers
     public class GeoObjectController : ControllerBase
     {
         private readonly IGeoObjectService _geoObjectService;
-        private readonly IGeoObjectClassifiersService _geoObjectClassifierService;
+        private readonly IGeoObjectClassifiersService? _geoObjectClassifierService;
 
         public GeoObjectController(
                 IGeoObjectService service, 
-                IGeoObjectClassifiersService geoObjectClassifierService)
+                IGeoObjectClassifiersService? geoObjectClassifierService = null)
         {
             _geoObjectService = service;
-            _geoObjectClassifierService = geoObjectClassifierService;
+            _geoObjectClassifierService = geoObjectClassifierService != null ? geoObjectClassifierService : null;
         }
 
         [HttpGet]

@@ -1,6 +1,6 @@
-﻿namespace GISServer.API.Service.AdditionalClasses
+﻿namespace GISServer.API.Service.Model
 {
-    public class BorderGeocodes
+    public class CommonBorder
     {
         public String? type { get; set; }
         public List<double[]> coordinates { get; set; } = new List<double[]>();

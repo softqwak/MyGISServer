@@ -2,7 +2,7 @@
 using GISServer.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GISServer.API.Service
+namespace GISServer.API.Service.Interface
 {
     public interface ITopologyService
     {

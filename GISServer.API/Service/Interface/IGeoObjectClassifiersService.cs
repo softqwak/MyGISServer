@@ -1,7 +1,7 @@
 ﻿using GISServer.API.Model;
 using GISServer.Domain.Model;
 
-namespace GISServer.API.Service
+namespace GISServer.API.Service.Interface
 {
     public interface IGeoObjectClassifiersService
     {

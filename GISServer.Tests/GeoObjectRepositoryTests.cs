@@ -29,7 +29,7 @@ namespace GISServer.Tests
             };
 
             // Act
-            repository.AddGeoObject(geoObject);
+            await repository.AddGeoObject(geoObject);
             context.SaveChanges();
 
             // Assert
@@ -48,7 +48,7 @@ namespace GISServer.Tests
             {
                 Name = "Test"
             };
-            repository.AddGeoObject(geoObject);
+            await repository.AddGeoObject(geoObject);
             context.SaveChanges();
 
             // Act
@@ -69,13 +69,13 @@ namespace GISServer.Tests
                 Name = "Объект_Тестовый",
                 Status = Status.Actual
             };
-            repository.AddGeoObject(geoObject);
+            await repository.AddGeoObject(geoObject);
             context.SaveChanges();
 
             // Act
             geoObject.Name = "Объект_Обновленный";
             geoObject.Status = Status.Archive;
-            repository.UpdateGeoObject(geoObject);
+            await repository.UpdateGeoObject(geoObject);
             context.SaveChanges();
 
             // Assert
@@ -96,11 +96,11 @@ namespace GISServer.Tests
             {
                 Name = "Test"
             };
-            repository.AddGeoObject(geoObject);
+            await repository.AddGeoObject(geoObject);
             context.SaveChanges();
 
             // Act
-            repository.DeleteGeoObject(geoObject.Id);
+            await repository.DeleteGeoObject(geoObject.Id);
             context.SaveChanges();
 
             // Assert
@@ -140,8 +140,8 @@ namespace GISServer.Tests
             geoObject2.OutputTopologyLinks.Add(tpl1);
             
 
-            repository.AddGeoObject(geoObject1);
-            repository.AddGeoObject(geoObject2);
+            await repository.AddGeoObject(geoObject1);
+            await repository.AddGeoObject(geoObject2);
             context.SaveChanges();
 
             //Act
@@ -176,15 +176,15 @@ namespace GISServer.Tests
             geoObject3.InputTopologyLinks.Add(tpl5);
             geoObject3.OutputTopologyLinks.Add(tpl6);
 
-            repository.AddGeoObject(geoObject3);
+            await repository.AddGeoObject(geoObject3);
 
             geoObject1.InputTopologyLinks.Add(tpl3);
             geoObject1.OutputTopologyLinks.Add(tpl4);
             geoObject2.OutputTopologyLinks.Add(tpl5);
             geoObject2.InputTopologyLinks.Add(tpl6);
 
-            repository.UpdateAsync(geoObject1);
-            repository.UpdateAsync(geoObject2);
+            await repository.UpdateAsync(geoObject1);
+            await repository.UpdateAsync(geoObject2);
             
             context.SaveChanges();
 

@@ -18,9 +18,9 @@ namespace GISServer.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAspect()
+        public async Task<ActionResult> Get()
         {
-            var dbAspects = await _aspectService.GetAspects();
+            var dbAspects = await _aspectService.Get();
             if (dbAspects == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "No Aspects in database.");
@@ -32,20 +32,20 @@ namespace GISServer.API.Controllers
         public async Task<ActionResult> PostAspect(AspectDTO aspectDTO)
         {
             aspectDTO.Id = Guid.NewGuid();
-            var dbAspect = await _aspectService.AddAspect(aspectDTO);
+            var dbAspect = await _aspectService.Add(aspectDTO);
 
             if (dbAspect == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "The Aspect could not be added.");
             }
 
-            return CreatedAtAction("GetAspect", new { aspectDTO });
+            return CreatedAtAction("Get", new { aspectDTO });
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetAspect(Guid id)
+        public async Task<ActionResult> Get(Guid id)
         {
-            var dbAspect = await _aspectService.GetAspect(id);
+            var dbAspect = await _aspectService.Get(id);
             if (dbAspect == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "No Aspect in database.");

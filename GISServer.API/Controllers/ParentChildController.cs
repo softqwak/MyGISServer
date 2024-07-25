@@ -18,9 +18,9 @@ namespace GISServer.API.Controllers
         }
 
         [HttpGet("Link")]
-        public async Task<ActionResult> GetParentChildLinks()
+        public async Task<ActionResult> Get()
         {
-            var dbParentChildLinks = await _parentChildService.GetParentChildLinks();
+            var dbParentChildLinks = await _parentChildService.Get();
             if (dbParentChildLinks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "No ParentChildLinks in database.");
@@ -35,7 +35,7 @@ namespace GISServer.API.Controllers
             Guid guid = Guid.NewGuid();
             parentChildLinkDTO.Id = guid;
 
-            var dbParentChildLinkDTO = await _parentChildService.AddParentChildLink(parentChildLinkDTO);
+            var dbParentChildLinkDTO = await _parentChildService.Add(parentChildLinkDTO);
 
             if (dbParentChildLinkDTO == null)
             {

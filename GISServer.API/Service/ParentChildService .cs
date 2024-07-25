@@ -25,13 +25,13 @@ namespace GISServer.API.Service
         }
 
 
-        public async Task<ParentChildObjectLinkDTO> AddParentChildLink(ParentChildObjectLinkDTO parentChildObjectLinkDTO)
+        public async Task<ParentChildObjectLinkDTO> Add(ParentChildObjectLinkDTO parentChildObjectLinkDTO)
         {
             try
             {
                 parentChildObjectLinkDTO = CreateGuid(parentChildObjectLinkDTO);
                 ParentChildObjectLink parentChildObjectLink = await _parentChildMapper.DTOToParentChildObjectLink(parentChildObjectLinkDTO);
-                return await _parentChildMapper.ParentChildObjectLinkToDTO(await _repository.AddParentChildLink(parentChildObjectLink));
+                return await _parentChildMapper.ParentChildObjectLinkToDTO(await _repository.Add(parentChildObjectLink));
             }
             catch (Exception ex)
             {
@@ -42,12 +42,12 @@ namespace GISServer.API.Service
             return null;
         }
 
-        public async Task<List<ParentChildObjectLinkDTO>> GetParentChildLinks()
+        public async Task<List<ParentChildObjectLinkDTO>> Get()
         {
             try
             {
                 List<ParentChildObjectLinkDTO> parentChildObjectLinksDTO = new List<ParentChildObjectLinkDTO>();
-                List<ParentChildObjectLink> parentChildObjectLinks = await _repository.GetParentChildLinks();
+                List<ParentChildObjectLink> parentChildObjectLinks = await _repository.Get();
                 foreach (var parentChildObjectLink in parentChildObjectLinks)
                 {
                     parentChildObjectLinksDTO.Add(await _parentChildMapper.ParentChildObjectLinkToDTO(parentChildObjectLink));

@@ -2,9 +2,9 @@
 {
     public interface IAspectRepository
     {
-        public Task<Aspect> AddAspect(Aspect aspect);
-        public Task<Aspect> GetAspect(Guid? id);
-        public Task<List<Aspect>> GetAspects();
+        public Task<Aspect> Add(Aspect aspect);
+        public Task<Aspect> Get(Guid? id);
+        public Task<List<Aspect>> Get();
         public Task<(bool, string)> DeleteAspect(Guid id);
     }
 }

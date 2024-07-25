@@ -23,13 +23,13 @@ namespace GISServer.API.Service
             return aspectDTO;
         }
 
-        public async Task<AspectDTO> AddAspect(AspectDTO aspectDTO)
+        public async Task<AspectDTO> Add(AspectDTO aspectDTO)
         {
             try
             {
                 aspectDTO = InitAspect(aspectDTO);
                 Aspect aspect = await _aspectMapper.DTOToAspect(aspectDTO);
-                return await _aspectMapper.AspectToDTO(await _repository.AddAspect(aspect));
+                return await _aspectMapper.AspectToDTO(await _repository.Add(aspect));
             }
             catch (Exception ex)
             {
@@ -38,16 +38,16 @@ namespace GISServer.API.Service
             }
         }
 
-        public async Task<AspectDTO> GetAspect(Guid id)
+        public async Task<AspectDTO> Get(Guid id)
         {
-            Aspect aspect = await _repository.GetAspect(id);
+            Aspect aspect = await _repository.Get(id);
             return await _aspectMapper.AspectToDTO(aspect);
         }
 
-        public async Task<List<AspectDTO>> GetAspects()
+        public async Task<List<AspectDTO>> Get()
         {
             List<AspectDTO> aspectsDTO = new List<AspectDTO>();
-            List<Aspect> aspects = await _repository.GetAspects();
+            List<Aspect> aspects = await _repository.Get();
             foreach (var aspect in aspects)
             {
                 aspectsDTO.Add(await _aspectMapper.AspectToDTO(aspect));

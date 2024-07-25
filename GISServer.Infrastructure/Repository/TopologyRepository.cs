@@ -16,7 +16,7 @@ namespace GISServer.Infrastructure.Service
         }
 
         // TopologyRepository
-        public async Task<TopologyLink> GetTopologyLink(Guid? id)
+        public async Task<TopologyLink> Get(Guid? id)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace GISServer.Infrastructure.Service
         }
 
         // TopologyRepository
-        public async Task<List<TopologyLink>> GetTopologyLinks()
+        public async Task<List<TopologyLink>> Get()
         {
             try
             {
@@ -48,15 +48,15 @@ namespace GISServer.Infrastructure.Service
         }
 
         // TopologyRepository
-        public async Task<TopologyLink> AddTopologyLink(TopologyLink topologyLink)
+        public async Task<TopologyLink> Add(TopologyLink topologyLink)
         {
             await _context.TopologyLinks.AddAsync(topologyLink);
             await _context.SaveChangesAsync();
-            return await GetTopologyLink(topologyLink.Id);
+            return await Get(topologyLink.Id);
         }
         public async Task<(bool, string)> DeleteTopologyLink(Guid id)
         {
-            var dbTopologyLink = await GetTopologyLink(id);
+            var dbTopologyLink = await Get(id);
             if (dbTopologyLink == null)
             {
                 return (false, "TopologyLink could not be found");

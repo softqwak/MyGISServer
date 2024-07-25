@@ -28,7 +28,7 @@ namespace GISServer.API.Service
             return topologyLinkDTO;
         }
 
-        public async Task<TopologyLinkDTO> AddTopologyLink(TopologyLinkDTO topologyLinkDTO)
+        public async Task<TopologyLinkDTO> Add(TopologyLinkDTO topologyLinkDTO)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace GISServer.API.Service
 
                 TopologyLink topologyLink = await _topologyMapper.DTOToTopologyLink(topologyLinkDTO);
 
-                return await _topologyMapper.TopologyLinkToDTO(await _repository.AddTopologyLink(topologyLink));
+                return await _topologyMapper.TopologyLinkToDTO(await _repository.Add(topologyLink));
             }
             catch (Exception ex)
             {
@@ -47,12 +47,12 @@ namespace GISServer.API.Service
             }
         }
 
-        public async Task<List<TopologyLinkDTO>> GetTopologyLinks()
+        public async Task<List<TopologyLinkDTO>> Get()
         {
             try
             {
                 List<TopologyLinkDTO> topologyLinksDTO = new List<TopologyLinkDTO>();
-                List<TopologyLink> topologyLinks = await _repository.GetTopologyLinks();
+                List<TopologyLink> topologyLinks = await _repository.Get();
                 foreach (var topologyLink in topologyLinks)
                 {
                     topologyLinksDTO.Add(await _topologyMapper.TopologyLinkToDTO(topologyLink));

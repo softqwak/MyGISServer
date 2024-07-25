@@ -17,9 +17,9 @@ namespace GISServer.API.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult> GetTopologyLinks()
+        public async Task<ActionResult> Get()
         {
-            var dbTopologyLinks = await _topologyService.GetTopologyLinks();
+            var dbTopologyLinks = await _topologyService.Get();
             if (dbTopologyLinks == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "No TopologyLinks in database.");
@@ -34,7 +34,7 @@ namespace GISServer.API.Controllers
             Guid guid = Guid.NewGuid();
             topologyLinkDTO.Id = guid;
 
-            var dbTopologyLinkDTO = await _topologyService.AddTopologyLink(topologyLinkDTO);
+            var dbTopologyLinkDTO = await _topologyService.Add(topologyLinkDTO);
 
             if (dbTopologyLinkDTO == null)
             {

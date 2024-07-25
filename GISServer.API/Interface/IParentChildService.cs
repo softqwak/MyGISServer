@@ -6,8 +6,8 @@ namespace GISServer.API.Interface
     public interface IParentChildService
     {
         public ParentChildObjectLinkDTO CreateGuid(ParentChildObjectLinkDTO parentChildObjectLinkDTO);
-        public Task<ParentChildObjectLinkDTO> AddParentChildLink(ParentChildObjectLinkDTO parentChildObjectLinkDTO);
-        public Task<List<ParentChildObjectLinkDTO>> GetParentChildLinks();
+        public Task<ParentChildObjectLinkDTO> Add(ParentChildObjectLinkDTO parentChildObjectLinkDTO);
+        public Task<List<ParentChildObjectLinkDTO>> Get();
         public Task<(bool, string)> DeleteParentChildLink(Guid id);
     }
 }

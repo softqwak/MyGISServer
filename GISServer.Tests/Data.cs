@@ -26,6 +26,11 @@ namespace GISServer.Tests.Data
         public int _topologyCount { get; set; }
         public int _parentChildCount { get; set; }
 
+        public List<GeoObject> objects = new List<GeoObject>();
+        public List<Aspect> aspects = new List<Aspect>();
+        public List<TopologyLink> topologyLinks = new List<TopologyLink>();
+        public List<ParentChildObjectLink> parentChildLinks = new List<ParentChildObjectLink>();
+
         public TestData()
         {
             var contextOptions = new DbContextOptionsBuilder<Context>()
@@ -46,7 +51,18 @@ namespace GISServer.Tests.Data
             CreateDataAsync().Wait();
         }
 
-        // TODO it is must to add global constant values for count objects
+        public async Task InitDataAsync()
+        {
+            await Task.Run(async () =>
+            {
+                objects = await _geoObjectRepository.Get();
+                aspects = await _aspectRepository.Get();
+                topologyLinks = await _topologyRepository.Get();
+                parentChildLinks = await _parentChildRepository.Get();
+            });
+        }
+
+        // 10 obj, 4 classes, 10 aspects, 2 topolink, 2 parlink 
         public async Task CreateDataAsync()
         {
             await Task.Run(async () =>
@@ -61,15 +77,15 @@ namespace GISServer.Tests.Data
                 }
                 for (_aspectCount = 0; _aspectCount < 10; _aspectCount++)
                 {
-                    await _aspectRepository.AddAspect(CreateAspect());
+                    await _aspectRepository.Add(CreateAspect());
                 }
                 for (_topologyCount = 0; _topologyCount < 2; _topologyCount++)
                 {
-                    await _topologyRepository.AddTopologyLink(CreateTopologyLink());
+                    await _topologyRepository.Add(CreateTopologyLink());
                 }
                 for (_parentChildCount = 0; _parentChildCount < 2; _parentChildCount++)
                 {
-                    await _parentChildRepository.AddParentChildLink(CreateParentChildObjectLink());
+                    await _parentChildRepository.Add(CreateParentChildObjectLink());
                 }
             });
         }

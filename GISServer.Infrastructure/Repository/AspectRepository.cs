@@ -14,7 +14,7 @@ namespace GISServer.Infrastructure.Service
         }
 
         // AspectRepository
-        public async Task<Aspect> GetAspect(Guid? id)
+        public async Task<Aspect> Get(Guid? id)
         {
             var result = await _context.Aspects
                 .Where(a => a.Id == id)
@@ -23,23 +23,23 @@ namespace GISServer.Infrastructure.Service
         }
 
         // AspectRepository
-        public async Task<List<Aspect>> GetAspects()
+        public async Task<List<Aspect>> Get()
         {
             return await _context.Aspects
                 .ToListAsync();
         }
 
         // AspectRepository
-        public async Task<Aspect> AddAspect(Aspect aspect)
+        public async Task<Aspect> Add(Aspect aspect)
         {
             await _context.AddAsync(aspect);
             await _context.SaveChangesAsync();
-            return await GetAspect(aspect.Id);
+            return await Get(aspect.Id);
         }
         public async Task<(bool, string)> DeleteAspect(Guid id)
         {
 
-            var dbAspect = await GetAspect(id);
+            var dbAspect = await Get(id);
             if (dbAspect == null)
             {
                 return (false, "Aspect could not be found");
@@ -50,7 +50,7 @@ namespace GISServer.Infrastructure.Service
         }
         public async Task<(bool, string)> Archive(Guid id)
         {
-            var dbAspect = await GetAspect(id);
+            var dbAspect = await Get(id);
 
             if (dbAspect == null)
             {

@@ -13,7 +13,7 @@ namespace GISServer.Infrastructure.Service
             _context = context;
         }
 
-        public async Task<ParentChildObjectLink> GetParentChildLink(Guid? id)
+        public async Task<ParentChildObjectLink> Get(Guid? id)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace GISServer.Infrastructure.Service
                 
         }
 
-        public async Task<List<ParentChildObjectLink>> GetParentChildLinks()
+        public async Task<List<ParentChildObjectLink>> Get()
         {
             try
             {
@@ -44,16 +44,16 @@ namespace GISServer.Infrastructure.Service
             }
         }
 
-        public async Task<ParentChildObjectLink> AddParentChildLink(ParentChildObjectLink parentChildObjectLink)
+        public async Task<ParentChildObjectLink> Add(ParentChildObjectLink parentChildObjectLink)
         {
             await _context.ParentChildObjectLinks.AddAsync(parentChildObjectLink);
             await _context.SaveChangesAsync();
-            return await GetParentChildLink(parentChildObjectLink.Id);
+            return await Get(parentChildObjectLink.Id);
         }
 
         public async Task<(bool, string)> DeleteParentChildLink(Guid id)
         {
-            var dbParentChildLink = await GetParentChildLink(id);
+            var dbParentChildLink = await Get(id);
             if (dbParentChildLink == null)
             {
                 return (false, "ParentChildLink could not be found");

@@ -55,7 +55,7 @@ namespace GISServer.Tests
             geoObject2.OutputTopologyLinks[0].Status = Status.Procces;
 
             GeoObject geo3 = new GeoObject();
-            geo3.Union(geoObject1, geoObject2);
+            // geo3.Union(geoObject1, geoObject2);
 
 
 

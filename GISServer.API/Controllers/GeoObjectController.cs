@@ -46,7 +46,7 @@ namespace GISServer.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGeoObject(Guid id, GeoObjectDTO geoObjectDTO)
+        public async Task<IActionResult> Put(Guid id, GeoObjectDTO geoObjectDTO)
         {
             if (id != geoObjectDTO.Id)
             {
@@ -64,7 +64,7 @@ namespace GISServer.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GeoObjectDTO>> PostGeoObject(GeoObjectDTO geoObjectDTO)
+        public async Task<ActionResult<GeoObjectDTO>> Post(GeoObjectDTO geoObjectDTO)
         {
             var dbGeoObject = await _geoObjectService.Add(geoObjectDTO);
 
@@ -77,7 +77,7 @@ namespace GISServer.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGeoObject(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             (bool status, string message) = await _geoObjectService.Archive(id);
 
@@ -91,7 +91,7 @@ namespace GISServer.API.Controllers
 
 
         [HttpPost("AddClassifier")]
-        public async Task<ActionResult<GeoObjectsClassifiersDTO>> PostGeoObjectsClassifiers(Guid geoObjectId, Guid classifierId)
+        public async Task<ActionResult<GeoObjectsClassifiersDTO>> PostClassifier(Guid geoObjectId, Guid classifierId)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace GISServer.API.Controllers
         }
 
         [HttpDelete("DeleteClassifier")]
-        public async Task<IActionResult> DeleteGeoObjectClassifier(Guid geoObjectId, Guid classifierId)
+        public async Task<IActionResult> DeleteClassifier(Guid geoObjectId, Guid classifierId)
         {
             (bool status, string message) = await _geoObjectClassifierService.Delete(geoObjectId, classifierId);
 
@@ -145,7 +145,7 @@ namespace GISServer.API.Controllers
         }
 
         [HttpPost("AddAspect")]
-        public async Task<ActionResult> PostGeoObjectAspect(Guid geoObjectId, Guid aspectId)
+        public async Task<ActionResult> PostAspect(Guid geoObjectId, Guid aspectId)
         {
             var dbgeoObject = await _geoObjectService.AddAspect(geoObjectId, aspectId);
             if (dbgeoObject == null)

@@ -14,14 +14,14 @@ namespace GISServer.Infrastructure.Service
         }
 
         // ClassifierRepository
-        public async Task<List<Classifier>> GetClassifiers()
+        public async Task<List<Classifier>> Get()
         {
             return await _context.Classifiers
                 .ToListAsync();
         }
 
         // ClassifierRepository
-        public async Task<Classifier> GetClassifier(Guid? id)
+        public async Task<Classifier> Get(Guid? id)
         {
             try
             {
@@ -38,16 +38,16 @@ namespace GISServer.Infrastructure.Service
         }
 
         // ClassifierRepository
-        public async Task<Classifier> AddClassifier(Classifier classifier)
+        public async Task<Classifier> Add(Classifier classifier)
         {
             await _context.Classifiers.AddAsync(classifier);
             await _context.SaveChangesAsync();
-            return await GetClassifier(classifier.Id);
+            return await Get(classifier.Id);
         }
-        public async Task<(bool, string)> DeleteClassifier(Guid id)
+        public async Task<(bool, string)> Delete(Guid id)
         {
 
-            var dbClassifier = await GetClassifier(id);
+            var dbClassifier = await Get(id);
             if (dbClassifier == null)
             {
                 return (false, "GeoObeject could not be found");
@@ -59,7 +59,7 @@ namespace GISServer.Infrastructure.Service
 
         public async Task<(bool, string)> Archive(Guid id)
         {
-            var dbClassifier = await GetClassifier(id);
+            var dbClassifier = await Get(id);
 
             if (dbClassifier == null)
             {

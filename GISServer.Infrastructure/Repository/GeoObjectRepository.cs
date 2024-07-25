@@ -51,8 +51,8 @@ namespace GISServer.Infrastructure.Service
         {
             var query = await _context.GeoObjects
                 .Where(o => o.Name == name)
-                .Include(l => l.InputTopologyLinks)
-                .Include(l2 => l2.OutputTopologyLinks)
+                .Include(itl => itl.InputTopologyLinks)
+                .Include(otl => otl.OutputTopologyLinks)
                 .FirstOrDefaultAsync();
             if (query is not null) return query;
             return null;

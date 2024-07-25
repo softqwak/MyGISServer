@@ -75,7 +75,7 @@ namespace GISServer.Tests
             // Act
             geoObject.Name = "Объект_Обновленный";
             geoObject.Status = Status.Archive;
-            await repository.UpdateGeoObject(geoObject);
+            await repository.UpdateAsync(geoObject);
             context.SaveChanges();
 
             // Assert
@@ -100,7 +100,7 @@ namespace GISServer.Tests
             context.SaveChanges();
 
             // Act
-            await repository.DeleteGeoObject(geoObject.Id);
+            await repository.Delete(geoObject.Id);
             context.SaveChanges();
 
             // Assert

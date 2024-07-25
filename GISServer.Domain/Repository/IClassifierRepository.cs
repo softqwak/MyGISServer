@@ -2,11 +2,11 @@ namespace GISServer.Domain.Model
 {
     public interface IClassifierRepository
     {
-        public Task<Classifier> AddClassifier(Classifier classifier);
-        public Task<Classifier> GetClassifier(Guid? id);
-        public Task<List<Classifier>> GetClassifiers();
+        public Task<Classifier> Add(Classifier classifier);
+        public Task<Classifier> Get(Guid? id);
+        public Task<List<Classifier>> Get();
 
-        public Task<(bool, string)> DeleteClassifier(Guid id);
+        public Task<(bool, string)> Delete(Guid id);
 
     }
 }

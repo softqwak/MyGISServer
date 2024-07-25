@@ -17,11 +17,10 @@ namespace GISServer.API.Controllers
             _classifierService = classifierService;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult> GetClassifier()
+        public async Task<ActionResult> Get()
         {
-            var getClassifiers = await _classifierService.GetClassifiers();
+            var getClassifiers = await _classifierService.Get();
             if (getClassifiers == null)
             {
                 return StatusCode(StatusCodes.Status204NoContent, "No Classifiers in database");
@@ -31,9 +30,9 @@ namespace GISServer.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetClassifier(Guid id)
+        public async Task<ActionResult> Get(Guid id)
         {
-            var classifier = await _classifierService.GetClassifier(id);
+            var classifier = await _classifierService.Get(id);
 
             if (classifier == null)
             {
@@ -47,12 +46,12 @@ namespace GISServer.API.Controllers
         public async Task<ActionResult<ClassifierDTO>> PostClassifier(ClassifierDTO classifierDTO)
         {
             try{
-            var dbClassifier = await _classifierService.AddClassifier(classifierDTO);
+            var dbClassifier = await _classifierService.Add(classifierDTO);
             if (dbClassifier == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{classifierDTO.Name} could not be added.");
             }
-            return CreatedAtAction("GetClassifier", new {id = classifierDTO.Id}, new {classifierDTO});
+            return CreatedAtAction("Get", new {id = classifierDTO.Id}, new {classifierDTO});
             }
             catch(Exception ex)
             {
@@ -62,9 +61,9 @@ namespace GISServer.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClassifier(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            (bool status, string message) = await _classifierService.DeleteClassifier(id);
+            (bool status, string message) = await _classifierService.Delete(id);
 
             if (status == false)
             {

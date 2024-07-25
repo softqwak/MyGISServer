@@ -18,19 +18,19 @@ namespace GISServer.API.Service
             _classifierMapper = classifierMapper;
         }
 
-        public ClassifierDTO InitClassifier(ClassifierDTO classifierDTO)
+        public ClassifierDTO Init(ClassifierDTO classifierDTO)
         {
             classifierDTO.Id = Guid.NewGuid();
             return classifierDTO;
         }
 
-        public async Task<ClassifierDTO> AddClassifier(ClassifierDTO classifierDTO)
+        public async Task<ClassifierDTO> Add(ClassifierDTO classifierDTO)
         {
             try
             {
-                classifierDTO = InitClassifier(classifierDTO);
+                classifierDTO = Init(classifierDTO);
                 Classifier classifier = await _classifierMapper.DTOToClassifier(classifierDTO);
-                return await _classifierMapper.ClassifierToDTO(await _repository.AddClassifier(classifier));
+                return await _classifierMapper.ClassifierToDTO(await _repository.Add(classifier));
             }
             catch (Exception ex)
             {
@@ -39,11 +39,11 @@ namespace GISServer.API.Service
             }
         }
         
-        public async Task<ClassifierDTO> GetClassifier(Guid id)
+        public async Task<ClassifierDTO> Get(Guid id)
         {
             try
             {
-                ClassifierDTO classifierDTO = await _classifierMapper.ClassifierToDTO(await _repository.GetClassifier(id));
+                ClassifierDTO classifierDTO = await _classifierMapper.ClassifierToDTO(await _repository.Get(id));
                 return classifierDTO;
             }
             catch (Exception ex)
@@ -53,11 +53,11 @@ namespace GISServer.API.Service
             }
         }
 
-        public async Task<List<ClassifierDTO>> GetClassifiers()
+        public async Task<List<ClassifierDTO>> Get()
         {
             try
             {
-                List<Classifier> classifiersFromDB = new List<Classifier>(await _repository.GetClassifiers());
+                List<Classifier> classifiersFromDB = new List<Classifier>(await _repository.Get());
                 List<ClassifierDTO> classifiers = new List<ClassifierDTO>();
                 foreach (var classifier in classifiersFromDB)
                 {
@@ -70,11 +70,11 @@ namespace GISServer.API.Service
                 return null;
             }
         }
-        public async Task<(bool, string)> DeleteClassifier(Guid id)
+        public async Task<(bool, string)> Delete(Guid id)
         {
             try
             {
-                return await _repository.DeleteClassifier(id);
+                return await _repository.Delete(id);
             }
             catch (Exception ex)
             {

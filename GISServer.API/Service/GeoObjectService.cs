@@ -10,19 +10,33 @@ namespace GISServer.API.Service
     {
         private readonly IGeoObjectRepository _geoObjectRepository;
         private readonly IClassifierRepository _classifierRepository;
+        private readonly IAspectRepository _aspectRepository;
+        private readonly IGeoObjectsClassifiersRepository _gocRepository;
+        private readonly IParentChildRepository _parentChildRepository;
+        private readonly ITopologyRepository _topologyRepository;
+
         private readonly GeoObjectMapper _geoObjectMapper;
         private readonly AspectMapper _aspectMapper;
         private readonly ClassifierMapper _classifierMapper;
 
         public GeoObjectService(
-                IGeoObjectRepository repository, 
+                IGeoObjectRepository geoObjectRepository, 
                 IClassifierRepository classifierRepository,
+                IAspectRepository aspectRepository,
+                IGeoObjectsClassifiersRepository gocRepository,
+                IParentChildRepository parentChildRepository,
+                ITopologyRepository topologyRepository,
                 GeoObjectMapper geoObjectMapper, 
                 ClassifierMapper classifierMapper,
                 AspectMapper aspectMapper)
         {
-            _geoObjectRepository = repository;
+            _geoObjectRepository = geoObjectRepository;
+            _aspectRepository = aspectRepository;
             _classifierRepository = classifierRepository;
+            _gocRepository = gocRepository;
+            _parentChildRepository = parentChildRepository;
+            _topologyRepository = topologyRepository;
+
             _geoObjectMapper = geoObjectMapper;
             _classifierMapper = classifierMapper;
             _aspectMapper = aspectMapper;
@@ -73,7 +87,7 @@ namespace GISServer.API.Service
                     {
                         Console.WriteLine(goc.ClassifierId);
                         geoObject.GeoObjectInfo.Classifiers.Add(
-                                await _classifierRepository.GetClassifier(goc.ClassifierId));
+                                await _classifierRepository.Get(goc.ClassifierId));
 
                     }
 
@@ -100,7 +114,7 @@ namespace GISServer.API.Service
                 {
                    geoObject.GeoObjectInfo.Classifiers.Add(
                        await _classifierMapper.ClassifierToDTO(
-                           await _classifierRepository.GetClassifier(gogc.ClassifierId)));
+                           await _classifierRepository.Get(gogc.ClassifierId)));
 
                 }
 
@@ -139,14 +153,19 @@ namespace GISServer.API.Service
 
         public async Task<(bool, string)> Archive(Guid id)
         {
-             try
+            List<(bool, string)> replys = new List<(bool, string)>();
+            try
             {
-                return await _geoObjectRepository.Archive(id);
+                // replys.Add(await _classifierRepository.Archive(id));
+                // replys.Add(await _geoObjectRepository.Archive(id));
+                replys.Add(await _geoObjectRepository.Archive(id));
             }
             catch (Exception ex)
             {
                 return (false, $"An error occured. Error Message: {ex.Message}");
             }
+            return (true, $"GeoObject Archived");
+
         }
 
         //

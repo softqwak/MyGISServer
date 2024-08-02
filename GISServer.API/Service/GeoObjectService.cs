@@ -193,6 +193,16 @@ namespace GISServer.API.Service
             }
         }
 
+        public async Task AddClassifier(Guid geoObjectId, Guid classifierId)
+        {
+            var geoObjectsClassifiers = new GeoObjectsClassifiers() 
+            {
+                GeoObjectId = geoObjectId,
+                ClassifierId = classifierId
+            };
+            await _geoObjectRepository.AddClassifier(geoObjectsClassifiers);
+        }
+
         public async Task<List<GeoObjectsClassifiers>> GetClassifiers(Guid? geoObjectInfoId)
         {
             try

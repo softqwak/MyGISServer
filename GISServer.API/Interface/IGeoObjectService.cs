@@ -14,6 +14,7 @@ namespace GISServer.API.Interface
         public Task<(bool, string)> Archive(Guid id);   
 
         public Task<GeoObjectsClassifiersDTO> AddClassifier(GeoObjectsClassifiersDTO geoObjectsClassifiersDTO);
+        public Task AddClassifier(Guid geoObjectId, Guid classifierId);
         public Task<List<GeoObjectsClassifiers>> GetClassifiers(Guid? geoObjectInfoId);
 
         public Task<GeoObjectDTO> AddAspect(Guid geoObjectId, Guid aspectId);

@@ -16,9 +16,6 @@ namespace GISServer.Tests.Archive
     {
         private TestData _data { get; set; }
 
-
-
-
         public Archive()
         {
             _data = new TestData();
@@ -33,26 +30,29 @@ namespace GISServer.Tests.Archive
             var obj1 = _data.objects[1];
             var aspect0 = _data.aspects[0];
             var aspect1 = _data.aspects[1];
-            var aspect2 = _data.aspects[2];
-            var aspect3 = _data.aspects[3];
+            var class0 = _data.classifiers[0];
+            var class1 = _data.classifiers[1];
             var topology0 = _data.topologyLinks[0];
             var topology1 = _data.topologyLinks[1];
             var parentChildLink0 = _data.parentChildLinks[0];
             var parentChildLink1 = _data.parentChildLinks[1];
 
+            _data._geoObjectService.AddClassifier(obj0.Id, class0.Id);
+            _data._geoObjectService.AddClassifier(obj0.Id, class1.Id);
+            //_data._geoObjectRepository.AddAspect(aspect0);
+            //_data._geoObjectRepository.AddAspect(aspect1);
 
             // Act
-            _data._geoObjectRepository.Archive(obj0.Id);
+            _data._geoObjectService.Archive(obj0.Id);
             obj0 = _data._geoObjectRepository.GetByNameAsync("obj0").Result;
 
             // Assert
             Assert.Equal(Status.Archive, obj0.Status);
+            // Assert.Equal(Status.Archive, class0.Status);
+            // Assert.Equal(Status.Archive, class1.Status);
             // Assert.Equal(Status.Archive, aspect0.Status);
             // Assert.Equal(Status.Archive, aspect1.Status);
 
-            // Assert.Equal(Status.Archive, obj1.Status);
-            // Assert.Equal(Status.Archive, aspect2.Status);
-            // Assert.Equal(Status.Archive, aspect3.Status);
             // TODO добавить проверку на архивацию связей, аспектов и геометрии объекта
         }
 

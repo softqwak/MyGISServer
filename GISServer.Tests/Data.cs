@@ -1,6 +1,9 @@
 using GISServer.Infrastructure.Data;
+using GISServer.API.Interface;
+using GISServer.API.Service;
 using Microsoft.EntityFrameworkCore;
 using GISServer.Domain.Model;
+using GISServer.API.Mapper;
 using GISServer.Infrastructure.Service;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,21 @@ namespace GISServer.Tests.Data
         public readonly IGeoObjectsClassifiersRepository _gocRepository;
         public readonly IParentChildRepository _parentChildRepository;
         public readonly ITopologyRepository _topologyRepository;
+
+        public readonly IGeoObjectService _geoObjectService;
+        public readonly IClassifierService _classifierService;
+        public readonly IAspectService _aspectService;
+        public readonly IGeoObjectClassifiersService _gocService;
+        public readonly IParentChildService _parentChildService;
+        public readonly ITopologyService _topologyService;
+
+        public readonly GeoObjectMapper _geoObjectMapper;
+        public readonly ClassifierMapper _classifierMapper;
+        public readonly AspectMapper _aspectMapper;
+        public readonly GeoObjectClassifiersMapper _gocMapper;
+        public readonly ParentChildMapper _parentChildMapper;
+        public readonly TopologyMapper _topologyMapper;
+
         public readonly Context _context;
 
         public int _geoObjectCount { get; set; }
@@ -28,6 +46,7 @@ namespace GISServer.Tests.Data
 
         public List<GeoObject> objects = new List<GeoObject>();
         public List<Aspect> aspects = new List<Aspect>();
+        public List<Classifier> classifiers = new List<Classifier>();
         public List<TopologyLink> topologyLinks = new List<TopologyLink>();
         public List<ParentChildObjectLink> parentChildLinks = new List<ParentChildObjectLink>();
 
@@ -48,6 +67,51 @@ namespace GISServer.Tests.Data
             _parentChildRepository = new ParentChildRepository(_context);
             _topologyRepository = new TopologyRepository(_context);
 
+            _geoObjectMapper = new GeoObjectMapper();
+            _gocMapper = new GeoObjectClassifiersMapper();
+            _classifierMapper = new ClassifierMapper();
+            _aspectMapper = new AspectMapper();
+            _parentChildMapper = new ParentChildMapper();
+            _topologyMapper = new TopologyMapper();
+
+            _geoObjectService = new GeoObjectService(
+                _geoObjectRepository,
+                _classifierRepository,
+                _aspectRepository,
+                _gocRepository,
+                _parentChildRepository,
+                _topologyRepository,
+                _geoObjectMapper,
+                _classifierMapper,
+                _aspectMapper
+            );
+
+            _classifierService = new ClassifierService(
+                _classifierRepository,
+                _classifierMapper
+            );
+
+            _aspectService = new AspectService(
+                _aspectRepository,
+                _aspectMapper 
+            );
+
+            _gocService = new GeoObjectClassifiersService(
+                _gocRepository,
+                _gocMapper 
+            );
+
+            _parentChildService = new ParentChildService(
+                _parentChildRepository,
+                _parentChildMapper
+            );
+
+            _topologyService = new TopologyService(
+                _topologyRepository,
+                _geoObjectRepository,
+                _topologyMapper
+            );
+
             CreateDataAsync().Wait();
         }
 
@@ -55,10 +119,35 @@ namespace GISServer.Tests.Data
         {
             await Task.Run(async () =>
             {
-                objects = await _geoObjectRepository.Get();
-                aspects = await _aspectRepository.Get();
-                topologyLinks = await _topologyRepository.Get();
-                parentChildLinks = await _parentChildRepository.Get();
+                var objectsDTO = await _geoObjectService.Get();
+                foreach(var objectDTO in objectsDTO)
+                    objects.Add(
+                            await _geoObjectMapper.DTOToObject(
+                                objectDTO));
+                    
+                var classifiersDTO = await _classifierService.Get();
+                foreach(var classifierDTO in classifiersDTO)
+                    classifiers.Add(
+                            await _classifierMapper.DTOToClassifier(
+                                classifierDTO));
+
+                var aspectsDTO = await _aspectService.Get();
+                foreach(var aspectDTO in aspectsDTO)
+                    aspects.Add(
+                            await _aspectMapper.DTOToAspect(
+                                aspectDTO));
+
+                var topologyLinksDTO = await _topologyService.Get();
+                foreach(var topologyLinkDTO in topologyLinksDTO)
+                    topologyLinks.Add(
+                            await _topologyMapper.DTOToTopologyLink(
+                                topologyLinkDTO));
+
+                var parentChildLinksDTO = await _parentChildService.Get();
+                foreach(var parentChildLinkDTO in parentChildLinksDTO)
+                    parentChildLinks.Add(
+                            await _parentChildMapper.DTOToParentChildObjectLink(
+                                parentChildLinkDTO));
             });
         }
 
@@ -69,23 +158,33 @@ namespace GISServer.Tests.Data
             {
                 for (_geoObjectCount = 0; _geoObjectCount < 10; _geoObjectCount++)
                 {
-                    await _geoObjectRepository.Add(CreateGeoObject());
+                    await _geoObjectService.Add(
+                            await _geoObjectMapper.ObjectToDTO(
+                                CreateGeoObject()));
                 }
                 for (_classifierCount = 0; _classifierCount < 4; _classifierCount++)
                 {
-                    await _classifierRepository.Add(CreateClassifier());
+                    await _classifierService.Add(
+                            await _classifierMapper.ClassifierToDTO(
+                                CreateClassifier()));
                 }
                 for (_aspectCount = 0; _aspectCount < 10; _aspectCount++)
                 {
-                    await _aspectRepository.Add(CreateAspect());
+                    await _aspectService.Add(
+                            await _aspectMapper.AspectToDTO(
+                                CreateAspect()));
                 }
                 for (_topologyCount = 0; _topologyCount < 2; _topologyCount++)
                 {
-                    await _topologyRepository.Add(CreateTopologyLink());
+                    await _topologyService.Add(
+                            await _topologyMapper.TopologyLinkToDTO(
+                                CreateTopologyLink()));
                 }
                 for (_parentChildCount = 0; _parentChildCount < 2; _parentChildCount++)
                 {
-                    await _parentChildRepository.Add(CreateParentChildObjectLink());
+                    await _parentChildService.Add(
+                            await _parentChildMapper.ParentChildObjectLinkToDTO(
+                                CreateParentChildObjectLink()));
                 }
             });
         }

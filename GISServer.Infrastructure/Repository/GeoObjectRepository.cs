@@ -89,6 +89,17 @@ namespace GISServer.Infrastructure.Service
             return await GetClassifiers(geoObjectsClassifiers.GeoObjectId);
         }
 
+        public async Task AddClassifier(Guid geoObjectId, Guid classifierId)
+        {
+            var goc = new GeoObjectsClassifiers
+            {
+                ClassifierId = classifierId,
+                GeoObjectId = geoObjectId,
+                Status = Status.Actual
+            };
+            await AddClassifier(goc);   
+        }
+
         // public async Task<GeoObject> UpdateGeoObject(GeoObject geoObject)
         // {
 
